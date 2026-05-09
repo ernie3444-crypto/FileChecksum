@@ -153,6 +153,9 @@
 
   <!-- Post-build: Merge assemblies into single EXE for Release configuration -->
   <Target Name="MergeAssemblies" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
-    <Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(ProjectDir)Merge-Assembly.ps1&quot; -OutputDir &quot;$(OutputPath)&quot;" />
+    <PropertyGroup>
+      <MergeOutputDir>$(ProjectDir)$(OutputPath)</MergeOutputDir>
+    </PropertyGroup>
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -Command &quot;. &apos;$(ProjectDir)Merge-Assembly.ps1&apos; -OutputDir &apos;$(MergeOutputDir)&apos;&quot;" />
   </Target>
 </Project>
