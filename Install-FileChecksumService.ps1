@@ -230,34 +230,45 @@ function Stop-ServiceNow {
 
 function Uninstall-Service {
     Write-Header "UNINSTALLING SERVICE"
-    
+
+    Write-Info "Checking if service exists..."
     $service = Get-Service $ServiceName -ErrorAction SilentlyContinue
-    
+
     if (-not $service) {
         Write-Warning-Custom "Service not found: $ServiceName"
         return $true
     }
-    
+
+    Write-Info "Service found: $ServiceName"
+
     # Stop service
     if ($service.Status -eq "Running") {
         Write-Info "Stopping service..."
         Stop-Service $ServiceName -ErrorAction SilentlyContinue -Force
-        Start-Sleep -Seconds 2
+        Start-Sleep -Seconds 3
+        Write-Success "Service stopped"
+    } else {
+        Write-Info "Service is not running (status: $($service.Status))"
     }
-    
+
     # Delete service
-    Write-Info "Deleting service..."
-    & sc.exe delete $ServiceName | Out-Null
-    Start-Sleep -Seconds 2
-    
+    Write-Info "Deleting service registration..."
+    $output = & sc.exe delete $ServiceName 2>&1
+    Write-Info "Delete command output: $output"
+    Start-Sleep -Seconds 3
+
     # Verify deletion
-    if (-not (Get-Service $ServiceName -ErrorAction SilentlyContinue)) {
+    Write-Info "Verifying service removal..."
+    $serviceAfter = Get-Service $ServiceName -ErrorAction SilentlyContinue
+
+    if (-not $serviceAfter) {
         Write-Success "Service uninstalled successfully"
         Write-Info "Install directory remains at: $InstallPath"
-        Write-Info "To remove: Remove-Item -Path '$InstallPath' -Recurse -Force"
+        Write-Info "To remove files: Remove-Item -Path '$InstallPath' -Recurse -Force"
         return $true
     } else {
-        Write-Error-Custom "Service still exists"
+        Write-Error-Custom "Service still exists. You may need to restart Windows to complete removal."
+        Write-Info "Try running: sc.exe delete $ServiceName"
         return $false
     }
 }
