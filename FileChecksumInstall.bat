@@ -296,15 +296,16 @@ if /i "%1"=="uninstall" (
     echo.
     
     echo Deleting service...
-    sc delete %SERVICE_NAME% >nul 2>&1
+    sc delete %SERVICE_NAME%
     if %errorlevel% neq 0 (
         echo ERROR: Failed to delete service
         pause
         exit /b 1
     )
-    
-    timeout /t 2 /nobreak >nul
-    echo OK: Service uninstalled
+
+    timeout /t 3 /nobreak
+    echo.
+    echo OK: Service uninstalled successfully
     echo.
     echo Install directory still exists at: %INSTALL_DIR%
     echo To remove it: rmdir /s /q "%INSTALL_DIR%"
