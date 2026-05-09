@@ -273,11 +273,12 @@ if /i "%1"=="uninstall" (
     echo uninstall
     echo ========================================================================
     echo.
-    
+
     echo Checking if service exists...
-    sc query %SERVICE_NAME% >nul 2>&1
+    sc query %SERVICE_NAME%
     if %errorlevel% neq 0 (
-        echo INFO: Service not found (nothing to uninstall)
+        echo.
+        echo INFO: Service '%SERVICE_NAME%' not found (nothing to uninstall)
         pause
         exit /b 0
     )
