@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  DRIVE OVERRIDE EXAMPLE - Master Server Configuration
+  
+  This shows how to use the driveOverride feature when multiple machines have
+  identical file structures but the files are on different drives.
+  
+  SCENARIO:
+  - PC 1: Files on C:\ drive
+  - PC 2: Files on D:\ drive  
+  - PC 3: Files on E:\ drive
+  
+  But they all have IDENTICAL paths relative to their drives:
+  - C:\Critical\file.exe = D:\Critical\file.exe = E:\Critical\file.exe
+  
+  SOLUTION: Use driveOverride to adapt one master config for all machines
+-->
+
+<FileChecksums>
+  <!-- ====================================================================
+       FILES WITH C:\ PATHS IN MASTER CONFIG
+       Each PC will override to their own drive letter
+       ==================================================================== -->
+  
+  <File path="C:\Windows\System32\config\SAM" 
+        algorithm="SHA256" 
+        description="SAM Database"
+        pcType="PC-Type-A">
+    <ExpectedChecksum>a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0</ExpectedChecksum>
+  </File>
+
+  <File path="C:\Program Files\CriticalApp\application.exe" 
+        algorithm="SHA256" 
+        description="Main Application"
+        pcType="PC-Type-A">
+    <ExpectedChecksum>b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1</ExpectedChecksum>
+  </File>
+
+  <File path="C:\Program Files\CriticalApp\config.ini" 
+        algorithm="SHA256" 
+        description="Application Configuration"
+        pcType="PC-Type-A">
+    <ExpectedChecksum>c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2</ExpectedChecksum>
+  </File>
+
+  <!-- Files on other PC types follow same pattern -->
+  <File path="C:\Data\database.db" 
+        algorithm="SHA256" 
+        description="Application Database"
+        pcType="PC-Type-B">
+    <ExpectedChecksum>d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3</ExpectedChecksum>
+  </File>
+
+  <!-- Common files (no pcType) apply to all machines -->
+  <File path="C:\antivirus\defender.exe" 
+        algorithm="SHA256" 
+        description="Antivirus Engine">
+    <ExpectedChecksum>f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5</ExpectedChecksum>
+  </File>
+
+</FileChecksums>

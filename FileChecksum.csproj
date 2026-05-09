@@ -137,8 +137,8 @@
   <!-- Configuration and Documentation Files -->
   <!-- Content Files -->
   <ItemGroup>
-    <Content Include="SampleConfig\master-server.xml" />
-    <Content Include="SampleConfig\client.xml" />
+    <Content Include="Example Config\client-config-sample.xml" />
+    <Content Include="Example Config\master-config-sample.xml" />
   </ItemGroup>
   <!-- Properties Folder -->
   <ItemGroup>
@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Example Config\CONFIG_GUIDE.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

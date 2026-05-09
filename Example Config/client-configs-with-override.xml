@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  CLIENT CONFIGURATION EXAMPLES WITH DRIVE OVERRIDE
+  
+  Three identical clients with files on different drives.
+  All use the SAME master config but with different driveOverride values.
+-->
+
+<!-- =====================================================================
+     EXAMPLE 1: PC-1 WITH FILES ON C:\ DRIVE
+     
+     Files in master config: C:\Program Files\App\app.exe
+     Drive override: (none - uses C: as-is)
+     Result: C:\Program Files\App\app.exe
+     ===================================================================== -->
+
+<?xml version="1.0" encoding="utf-8"?>
+<FileChecksums 
+    port="5000"
+    checkIntervalMs="60000"
+    pcType="PC-Type-A"
+    configServerUrl="http://master.example.com/master-config.xml"
+    driveOverride="">
+  <!-- Leave driveOverride empty to use paths exactly as defined in master config -->
+</FileChecksums>
+
+
+<!-- =====================================================================
+     EXAMPLE 2: PC-2 WITH FILES ON D:\ DRIVE
+     
+     Files in master config: C:\Program Files\App\app.exe
+     Drive override: D
+     Result: D:\Program Files\App\app.exe
+     ===================================================================== -->
+
+<?xml version="1.0" encoding="utf-8"?>
+<FileChecksums 
+    port="5000"
+    checkIntervalMs="60000"
+    pcType="PC-Type-A"
+    configServerUrl="http://master.example.com/master-config.xml"
+    driveOverride="D">
+  <!-- This PC has all files on D:\ instead of C:\ -->
+</FileChecksums>
+
+
+<!-- =====================================================================
+     EXAMPLE 3: PC-3 WITH FILES ON E:\ DRIVE
+     
+     Files in master config: C:\Program Files\App\app.exe
+     Drive override: E
+     Result: E:\Program Files\App\app.exe
+     ===================================================================== -->
+
+<?xml version="1.0" encoding="utf-8"?>
+<FileChecksums 
+    port="5000"
+    checkIntervalMs="60000"
+    pcType="PC-Type-A"
+    configServerUrl="http://master.example.com/master-config.xml"
+    driveOverride="E">
+  <!-- This PC has all files on E:\ instead of C:\ -->
+</FileChecksums>
+
+
+<!-- =====================================================================
+     NOTE: IMPORTANT DETAILS
+     
+     1. Drive Override Behavior:
+        - Only affects paths starting with a drive letter (C:\, D:\, etc.)
+        - Does NOT affect UNC paths (\\server\share\file.exe)
+        - Replaces the entire drive letter, preserves rest of path
+     
+     2. Validation:
+        - Must be a single letter: "C", "D", "E", "Z"
+        - Case insensitive: "d" same as "D"
+        - With or without colon: "D" or "D:" both work
+     
+     3. Error Handling:
+        - If driveOverride is invalid, service won't start
+        - Check Event Log for specific error message
+        - Service will log: "Error applying drive override"
+     
+     4. Event Log:
+        - Shows which drive override was applied
+        - Shows example of updated file path
+        - Helps verify the override worked correctly
+     
+     5. Common Use Cases:
+        - Development: Files on E:\
+        - Production: Files on C:\
+        - Storage: Files on D:\
+        - Each uses same master config with different driveOverride
+     
+     ===================================================================== -->

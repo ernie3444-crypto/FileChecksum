@@ -39,6 +39,20 @@ namespace FileChecksum.Core.Models
         public string ConfigServerUrl { get; set; }
 
         /// <summary>
+        /// Drive letter override for file paths.
+        /// Useful when multiple PCs have identical file structures but on different drives.
+        /// 
+        /// Example:
+        ///   Master config has: C:\Critical\file.exe
+        ///   Set driveOverride="D" to use: D:\Critical\file.exe
+        /// 
+        /// Valid values: "C", "D", "E", "Z", etc.
+        /// Leave empty/null to use paths as-is from the master config.
+        /// </summary>
+        [XmlAttribute("driveOverride")]
+        public string DriveOverride { get; set; }
+
+        /// <summary>
         /// List of files to monitor for integrity.
         /// </summary>
         [XmlElement("File")]
@@ -61,6 +75,8 @@ namespace FileChecksum.Core.Models
     {
         /// <summary>
         /// Full path to the file on disk.
+        /// Can include a drive letter (e.g., "C:\folder\file.exe") which can be overridden.
+        /// Or UNC paths (e.g., "\\server\share\file.exe") which are not affected by drive override.
         /// </summary>
         [XmlAttribute("path")]
         public string Path { get; set; }

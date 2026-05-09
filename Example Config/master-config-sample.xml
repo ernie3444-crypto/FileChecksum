@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  MASTER SERVER CONFIGURATION FILE
+  
+  Purpose: Central configuration file hosted on a server that all client machines fetch from.
+  This file contains entries for MULTIPLE machine types (Workstation-A, Server-B, Server-C, etc.)
+  
+  Each client machine will:
+  1. Download this file from the server
+  2. Filter to only files matching its own PCType
+  3. Use those files for monitoring
+  
+  Location: http://your-master-server/checksum/config.xml
+  Example: http://fileserver.example.com/config/master-config.xml
+  
+  Served by: IIS, Apache, or any web server
+  File Permissions: Read access for all clients
+-->
+
+<FileChecksums>
+  <!-- ====================================================================
+       WORKSTATION-A FILES
+       Machine: Workstation-A (user workstations in Department A)
+       ==================================================================== -->
+  
+  <File path="C:\Windows\System32\config\SAM" 
+        algorithm="SHA256" 
+        description="SAM Database - Critical System File"
+        pcType="Workstation-A">
+    <ExpectedChecksum>a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0</ExpectedChecksum>
+  </File>
+
+  <File path="C:\Program Files\Critical App\application.exe" 
+        algorithm="SHA256" 
+        description="Main Application Executable"
+        pcType="Workstation-A">
+    <ExpectedChecksum>b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1</ExpectedChecksum>
+  </File>
+
+  <File path="C:\Program Files\Critical App\config.xml" 
+        algorithm="MD5" 
+        description="Application Configuration"
+        pcType="Workstation-A">
+    <ExpectedChecksum>5d41402abc4b2a76b9719d911017c592</ExpectedChecksum>
+  </File>
+
+  <File path="C:\Users\Public\Documents\licenses.dat" 
+        algorithm="SHA512" 
+        description="License Key File"
+        pcType="Workstation-A">
+    <ExpectedChecksum>cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e</ExpectedChecksum>
+  </File>
+
+  <!-- ====================================================================
+       SERVER-B FILES
+       Machine: Server-B (file server)
+       ==================================================================== -->
+
+  <File path="D:\Data\database.mdf" 
+        algorithm="SHA256" 
+        description="SQL Database File"
+        pcType="Server-B">
+    <ExpectedChecksum>c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2</ExpectedChecksum>
+  </File>
+
+  <File path="D:\Backups\backup_manifest.xml" 
+        algorithm="SHA1" 
+        description="Backup Manifest"
+        pcType="Server-B">
+    <ExpectedChecksum>356a192b7913b04c54574d18c28d46e6395428ab</ExpectedChecksum>
+  </File>
+
+  <File path="D:\Logs\application.log" 
+        algorithm="MD5" 
+        description="Application Event Log"
+        pcType="Server-B">
+    <ExpectedChecksum>5d41402abc4b2a76b9719d911017c592</ExpectedChecksum>
+  </File>
+
+  <!-- ====================================================================
+       SERVER-C FILES
+       Machine: Server-C (web server)
+       ==================================================================== -->
+
+  <File path="C:\inetpub\wwwroot\web.config" 
+        algorithm="SHA256" 
+        description="IIS Configuration"
+        pcType="Server-C">
+    <ExpectedChecksum>d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3</ExpectedChecksum>
+  </File>
+
+  <File path="C:\inetpub\wwwroot\bin\application.dll" 
+        algorithm="SHA256" 
+        description="Main Application Assembly"
+        pcType="Server-C">
+    <ExpectedChecksum>e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4</ExpectedChecksum>
+  </File>
+
+  <File path="C:\inetpub\logs\LogFiles\W3SVC1\access.log" 
+        algorithm="MD5" 
+        description="IIS Access Log"
+        pcType="Server-C">
+    <ExpectedChecksum>098f6bcd4621d373cade4e832627b4f6</ExpectedChecksum>
+  </File>
+
+  <!-- ====================================================================
+       COMMON FILES (No PCType = applies to ALL machines)
+       These files will be monitored by every machine that downloads this config
+       ==================================================================== -->
+
+  <File path="C:\Windows\System32\kernel32.dll" 
+        algorithm="SHA256" 
+        description="Windows Kernel (Critical System File)">
+    <ExpectedChecksum>f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5</ExpectedChecksum>
+  </File>
+
+  <File path="C:\Windows\System32\ntoskrnl.exe" 
+        algorithm="SHA256" 
+        description="Windows Kernel Executable">
+    <ExpectedChecksum>g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5j6</ExpectedChecksum>
+  </File>
+
+  <File path="C:\antivirus\defender.exe" 
+        algorithm="SHA256" 
+        description="Antivirus Engine (Common to all machines)">
+    <ExpectedChecksum>h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5j6k7</ExpectedChecksum>
+  </File>
+
+</FileChecksums>
