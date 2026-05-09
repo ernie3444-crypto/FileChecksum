@@ -150,23 +150,5 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
-  <!-- ILMerge post-build for Release configuration -->
-  <Target Name="MergeAssemblies" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
-    <PropertyGroup>
-      <ILMergePath>$(MSBuildThisFileDirectory)packages\ILMerge.3.0.41\tools\ILMerge.exe</ILMergePath>
-      <OutputDir>$(OutputPath)</OutputDir>
-      <MergedExe>$(OutputDir)FileChecksum.Merged.exe</MergedExe>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <AssembliesToMerge Include="$(OutputDir)*.dll" />
-    </ItemGroup>
-
-    <Exec Command="&quot;$(ILMergePath)&quot; /out:&quot;$(MergedExe)&quot; &quot;$(OutputDir)FileChecksum.exe&quot; @(AssembliesToMerge, ' &quot;', '&quot;')" />
-
-    <Exec Command="move &quot;$(MergedExe)&quot; &quot;$(OutputDir)FileChecksum.exe&quot;" />
-
-    <Message Text="ILMerge complete: Single FileChecksum.exe created with all dependencies" Importance="high" />
-  </Target>
+  <Import Project="packages\Fody.6.7.0\build\Fody.targets" Condition="Exists('packages\Fody.6.7.0\build\Fody.targets')" />
 </Project>
