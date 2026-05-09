@@ -274,40 +274,35 @@ if /i "%1"=="uninstall" (
     echo ========================================================================
     echo.
 
-    echo Checking if service exists...
-    sc query %SERVICE_NAME%
-    if %errorlevel% neq 0 (
-        echo.
-        echo INFO: Service '%SERVICE_NAME%' not found (nothing to uninstall)
-        pause
-        exit /b 0
-    )
-    echo OK: Service found
-    echo.
-    
-    echo Stopping service...
-    sc query %SERVICE_NAME% | find "RUNNING" >nul
-    if %errorlevel% equ 0 (
-        net stop %SERVICE_NAME% >nul 2>&1
-        timeout /t 2 /nobreak >nul
-        echo OK: Service stopped
-    ) else (
-        echo INFO: Service was already stopped
-    )
-    echo.
-    
-    echo Deleting service...
+    echo Attempting to stop service...
+    net stop %SERVICE_NAME% >nul 2>&1
+    timeout /t 1 /nobreak >nul
+
+    echo Attempting to delete service...
     sc delete %SERVICE_NAME%
     if %errorlevel% neq 0 (
         echo ERROR: Failed to delete service
+        echo.
+        echo The service may need to be deleted manually:
+        echo   sc delete %SERVICE_NAME%
+        echo.
         pause
         exit /b 1
     )
 
-    timeout /t 3 /nobreak
+    timeout /t 2 /nobreak
     echo.
-    echo OK: Service uninstalled successfully
-    echo.
+
+    echo Verifying service removal...
+    sc query %SERVICE_NAME% >nul 2>&1
+    if %errorlevel% equ 0 (
+        echo WARNING: Service still exists (may require restart)
+        echo.
+    ) else (
+        echo OK: Service successfully uninstalled
+        echo.
+    )
+
     echo Install directory still exists at: %INSTALL_DIR%
     echo To remove it: rmdir /s /q "%INSTALL_DIR%"
     echo.
